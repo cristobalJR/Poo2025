@@ -2,9 +2,9 @@ package neartrainnetwork;
 
 import sienens.SelfOrderKiosk;
 
-public class LanguageSelectionScreen extends CarruselScreen {
+public class CommunicationErrorScreen extends Screen {
 
-    public LanguageSelectionScreen(SelfOrderKiosk kiosk) {
+    public CommunicationErrorScreen(SelfOrderKiosk kiosk) {
         super(kiosk);
     }
 
@@ -14,10 +14,9 @@ public class LanguageSelectionScreen extends CarruselScreen {
         Translator translator = operationContext.getTranslator();
         configureButtons();
         kiosk.setMode(0);
-        kiosk.setTitle(translator.translate("Seleccione el idioma"));
-        kiosk.setDescription("(Selección de idioma: pendiente de implementar)");
-        kiosk.setOption('F', translator.translate("Cancelar"));
-        kiosk.waitEvent(30);
+        kiosk.setTitle(translator.translate("Problema de comunicación"));
+        kiosk.setDescription("(Error de comunicación: pendiente de implementar)");
+        kiosk.waitEvent(5);
         return new WelcomeScreen(kiosk); // provisional
     }
 }

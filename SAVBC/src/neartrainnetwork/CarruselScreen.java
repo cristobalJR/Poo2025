@@ -1,14 +1,16 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package neartrainnetwork;
 
+import sienens.SelfOrderKiosk;
+
 /**
- *
- * @author c.justo.2019
+ * Base for screens that show a list too long for the buttons and need paging.
+ * The paging helpers (navigation/selection) are added in the next block.
  */
 public abstract class CarruselScreen extends Screen {
-    
-   
+
+    protected int index = 0;
+
+    protected CarruselScreen(SelfOrderKiosk kiosk) {
+        super(kiosk);
+    }
 }

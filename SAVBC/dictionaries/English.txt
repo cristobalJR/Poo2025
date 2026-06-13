@@ -1,0 +1,14 @@
+Venta de billetes de Cercanías	Commuter train ticket sales
+Bienvenido. Seleccione una opción.	Welcome. Please select an option.
+Cambiar idioma	Change language
+Iniciar compra	Start purchase
+Seleccione la estación de origen	Select the origin station
+Seleccione la estación de destino	Select the destination station
+Seleccione el idioma	Select the language
+Cancelar	Cancel
+Pago	Payment
+Origen	Origin
+Destino	Destination
+El precio de la compra es	The order price is
+Operación realizada con éxito	Operation completed successfully
+Problema de comunicación	Communication problem
