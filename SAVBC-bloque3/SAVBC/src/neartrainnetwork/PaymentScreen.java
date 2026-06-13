@@ -43,7 +43,6 @@ public class PaymentScreen extends Screen {
 
         while (true) {
             char event = kiosk.waitEvent(30);
-            
             if (event == CANCEL) {
                 return new WelcomeScreen(kiosk);
             }
