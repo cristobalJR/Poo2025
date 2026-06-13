@@ -1,0 +1,43 @@
+SAVBC — Versión final (comentarios en español)
+==============================================
+
+QUÉ ES
+- Las 16 clases del paquete neartrainnetwork con los comentarios en español,
+  explicativos y pensados para que puedas retomar y modificar la práctica.
+- SOLO han cambiado los comentarios respecto a la versión anterior; la lógica
+  es idéntica (compila sin avisos y los precios siguen igual).
+
+CÓMO APLICARLO EN NETBEANS
+- Sustituye tu paquete neartrainnetwork por el de src/neartrainnetwork/.
+- El paquete debe contener EXACTAMENTE estas 16 clases (nada más):
+  CommuterTicketDispenser, TicketDispenserManager, Screen, CarruselScreen,
+  WelcomeScreen, LanguageSelectionScreen, StationSelectionScreen,
+  PaymentScreen, SuccessScreen, CommunicationErrorScreen, TrainStation,
+  TrainNetwork, TariffCalculator, Translator, TranslatorManager,
+  OperationContext.
+- dictionaries/ va en la raíz del proyecto (junto a config/).
+- config/stations.csv y config/tariffs.csv son los OFICIALES del profesor:
+  no se tocan (ya están en tu proyecto).
+
+ESTADO
+- Requisitos R1-R25 completos y probados.
+- Compila sin errores ni avisos (Java 21).
+- Datos oficiales verificados: 98 estaciones, 8 zonas, precios correctos.
+
+CÓMO MODIFICARLA EN EL FUTURO (resumen rápido)
+- El corazón del programa: TicketDispenserManager.start() crea todo y ejecuta
+  un bucle que va mostrando pantallas; cada pantalla, en su show(), DEVUELVE la
+  siguiente pantalla. Para entender el flujo, sigue esos return entre pantallas.
+- Añadir una pantalla nueva:
+    1) Crea una clase que herede de Screen (o de CarruselScreen si muestra una
+       lista larga con paginación).
+    2) Implementa show(): pinta la pantalla y devuelve la siguiente.
+    3) Enlázala desde la pantalla que deba dar paso a ella (devolviendo una
+       instancia de tu clase nueva).
+- Añadir un idioma: crea dictionaries/Idioma.txt con líneas
+  "texto en español"  <TAB>  "traducción". Aparecerá solo en "Cambiar idioma".
+- Cambiar estaciones o precios: edita config/stations.csv o config/tariffs.csv.
+- Cambiar textos visibles: están en español dentro del código (cada traductor
+  los traduce con su fichero .txt).
+- Datos compartidos por varias pantallas: exponlos en OperationContext, que es
+  el objeto que viaja por todas.
