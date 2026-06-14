@@ -1,0 +1,20 @@
+Venta de billetes de Cercanías	Commuter train ticket sales
+Bienvenido. Seleccione una opción.	Welcome. Please select an option.
+Cambiar idioma	Change language
+Iniciar compra	Start purchase
+Seleccione la estación de origen	Select the origin station
+Seleccione la estación de destino	Select the destination station
+Seleccione el idioma	Select the language
+Cancelar	Cancel
+Pago	Payment
+Origen	Origin
+Destino	Destination
+El precio de la compra es	The order price is
+Operación realizada con éxito	Operation completed successfully
+Problema de comunicación	Communication problem
+Introduzca tarjeta de crédito	Please insert your credit card
+Pago rechazado. Inténtelo de nuevo o cancele.	Payment declined. Try again or cancel.
+Billete de Cercanías	Commuter train ticket
+Fecha	Date
+Retire la tarjeta y el billete.	Please take your card and ticket.
+Retire su tarjeta. Recuperando comunicación, espere...	Remove your card. Restoring communication, please wait...

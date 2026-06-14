@@ -1,0 +1,30 @@
+SAVBC — Versión final (comentarios en español) + DOS RETOQUES opcionales
+========================================================================
+
+Esta versión es idéntica a la final, pero con dos retoques de fidelidad al
+diseño. Solo cambian 5 clases (CarruselScreen, StationSelectionScreen,
+LanguageSelectionScreen, SuccessScreen, CommunicationErrorScreen); el resto
+es igual. Decide tú si la usas o te quedas con la anterior.
+
+RETOQUE 1 — Navegación condicional en el carrusel (fidelidad a la Figura 10)
+- configureNavigationButtons(int total): los botones << y >> SOLO se muestran
+  cuando hay más elementos de los que caben en una página (más de 15).
+- Resultado: la pantalla de ESTACIÓN (98 estaciones) sigue mostrando << y >>;
+  la pantalla de IDIOMA (pocos idiomas, caben en una página) ya NO los muestra,
+  tal como indica la Figura 10 (setOption('R',null)/setOption('U',null)).
+
+RETOQUE 2 — Botón "Cancelar" en Éxito y en Error de comunicación (R24 literal)
+- R24 dice "en todas las pantallas habrá un botón para cancelar".
+- Se añade un botón Cancelar (tecla 'F') a SuccessScreen y a
+  CommunicationErrorScreen; ambos vuelven a la pantalla de bienvenida.
+  * En la de error, además de recuperarse sola, ahora puedes cancelar la espera.
+  * En la de éxito, el botón vuelve al inicio (si prefieres, renómbralo a
+    "Aceptar" o "Finalizar"; funciona igual).
+- La pantalla de BIENVENIDA sigue SIN cancelar a propósito: es el inicio, no hay
+  nada que cancelar (los diagramas 1/5 tampoco muestran cancelar desde ella).
+
+CÓMO APLICARLO
+- Igual que siempre: sustituye tu paquete neartrainnetwork por el de
+  src/neartrainnetwork/ (16 clases), deja dictionaries/ en la raíz junto a
+  config/, y no toques config/stations.csv ni config/tariffs.csv (los del profesor).
+- Compila sin errores ni avisos (Java 21). R1-R25 cubiertos.
