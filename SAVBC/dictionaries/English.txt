@@ -18,3 +18,8 @@ Billete de Cercanías	Commuter train ticket
 Fecha	Date
 Retire la tarjeta y el billete.	Please take your card and ticket.
 Retire su tarjeta. Recuperando comunicación, espere...	Remove your card. Restoring communication, please wait...
+¿Dispone de tarjeta de familia numerosa?	Do you have a large family card?
+Si dispone de tarjeta de familia numerosa se aplicará un 20% de descuento.	If you have a large family card a 20% discount will be applied.
+Sí	Yes
+No	No
+La estación de destino está en obras	The destination station is under construction

@@ -15,6 +15,7 @@ public class OperationContext {
 
     private TrainStation origin;
     private TrainStation destination;
+    private boolean largeFamily;                         // ¿tiene tarjeta de familia numerosa?
     private Translator translator;                       // idioma actual
     private final TranslatorManager translatorManager;   // servicio de idiomas
     private final TrainNetwork trainNetwork;             // servicio de red / precios
@@ -54,19 +55,38 @@ public class OperationContext {
         this.destination = destination;
     }
 
+    /** ¿El usuario ha declarado tener tarjeta de familia numerosa? */
+    public boolean isLargeFamily() {
+        return largeFamily;
+    }
+
+    public void setLargeFamily(boolean largeFamily) {
+        this.largeFamily = largeFamily;
+    }
+
     public void setTranslator(Translator translator) {
         this.translator = translator;
     }
 
-    /** Vacía origen y destino para empezar una compra nueva desde cero. */
+    /** Vacía origen, destino y el descuento para empezar una compra nueva desde cero. */
     public void reset() {
         this.origin = null;
         this.destination = null;
+        this.largeFamily = false;
     }
 
-    /** Precio del viaje actual (lo calcula la red de trenes con origen y destino). */
+    /**
+     * Precio del viaje actual (lo calcula la red de trenes con origen y destino).
+     * Si el usuario tiene tarjeta de familia numerosa se aplica un 20% de
+     * descuento: precio - precio*0.2 = precio*0.8. Se deja a 2 decimales (euros);
+     * con las tarifas del fichero el resultado es exacto, no hace falta redondear.
+     */
     public BigDecimal getPrice() {
-        return trainNetwork.getPrice(origin, destination);
+        BigDecimal price = trainNetwork.getPrice(origin, destination);
+        if (largeFamily) {
+            price = price.multiply(new BigDecimal("0.8")).setScale(2);
+        }
+        return price;
     }
 
     /**

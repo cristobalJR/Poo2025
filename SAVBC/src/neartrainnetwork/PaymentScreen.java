@@ -46,11 +46,19 @@ public class PaymentScreen extends Screen {
         SelfOrderKiosk kiosk = getSelfOrderKiosk();
         Translator translator = operationContext.getTranslator();
 
+        // Mod 2: solo si el destino está en obras se prepara un aviso, que se
+        // muestra ÚNICAMENTE en la pantalla de pago (no va al billete ni al log).
+        String worksNotice = "";
+        if (operationContext.getTrainNetwork()
+                .isStationUnderWorks(operationContext.getDestination())) {
+            worksNotice = "\n\n" + translator.translate("La estación de destino está en obras");
+        }
+
         configureButtons();
         kiosk.setMode(0);
         kiosk.setTitle(translator.translate("Introduzca tarjeta de crédito"));
         // La descripción es el resumen de la compra (origen, destino y precio).
-        kiosk.setDescription(operationContext.getDescription());
+        kiosk.setDescription(operationContext.getDescription() + worksNotice);
         kiosk.setOption(CANCEL, translator.translate("Cancelar"));
 
         while (true) {
@@ -85,7 +93,7 @@ public class PaymentScreen extends Screen {
                 // seguimos esperando otra tarjeta (o que pulse Cancelar).
                 kiosk.setDescription(
                         translator.translate("Pago rechazado. Inténtelo de nuevo o cancele.")
-                        + "\n\n" + operationContext.getDescription());
+                        + "\n\n" + operationContext.getDescription() + worksNotice);
             }
         }
     }

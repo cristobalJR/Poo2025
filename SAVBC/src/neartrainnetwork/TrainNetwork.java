@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.TreeSet;
 
 /**
@@ -25,13 +27,16 @@ import java.util.TreeSet;
 public class TrainNetwork {
 
     private static final String STATIONS_FILE = "config/stations.csv";
+    private static final String WORKS_FILE = "config/Obras.txt";
 
     private final TreeSet<TrainStation> stationSet = new TreeSet<>();        // únicas y ordenadas
     private final HashMap<String, TrainStation> stationMap = new HashMap<>(); // búsqueda por nombre
+    private final Set<String> stationsUnderWorks = new HashSet<>();          // nombres de estaciones en obras
     private final TariffCalculator calculator;
 
     public TrainNetwork() {
         loadStationGraph(STATIONS_FILE);
+        loadStationsUnderWorks(WORKS_FILE); // estaciones que están en obras
         // La lista de zonas (ordenada) se construye a partir de las estaciones
         // ya cargadas y se le pasa a la calculadora de tarifas.
         calculator = new TariffCalculator(buildOrderedZoneList());
@@ -50,6 +55,14 @@ public class TrainNetwork {
     /** Busca una estación por su nombre exacto (devuelve null si no existe). */
     public TrainStation getStation(String stationName) {
         return stationMap.get(stationName);
+    }
+
+    /**
+     * Indica si una estación está en obras. Se consulta en O(1) sobre el
+     * conjunto (Set) de nombres de estaciones en obras cargado del fichero.
+     */
+    public boolean isStationUnderWorks(TrainStation station) {
+        return stationsUnderWorks.contains(station.getName());
     }
 
     /**
@@ -82,6 +95,36 @@ public class TrainNetwork {
             e.printStackTrace();
         } finally {
             // El cierre también puede lanzar IOException, así que se protege.
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /**
+     * Lee el fichero de estaciones en obras: un nombre de estación por línea.
+     * Los nombres se guardan en un Set para poder consultar al instante si una
+     * estación está en obras. Si el fichero no existe, el conjunto queda vacío
+     * (no hay estaciones en obras).
+     */
+    private void loadStationsUnderWorks(String fileName) {
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader(fileName));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.isBlank()) {
+                    continue;
+                }
+                stationsUnderWorks.add(line.trim());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
             if (reader != null) {
                 try {
                     reader.close();

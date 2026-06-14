@@ -64,6 +64,7 @@ public class StationSelectionScreen extends CarruselScreen {
             return new StationSelectionScreen("Seleccione la estación de destino", kiosk);
         }
         operationContext.setDestination(station);
-        return new PaymentScreen(kiosk);
+        // Antes del pago se pregunta por la tarjeta de familia numerosa.
+        return new FamilyDiscountScreen(kiosk);
     }
 }
