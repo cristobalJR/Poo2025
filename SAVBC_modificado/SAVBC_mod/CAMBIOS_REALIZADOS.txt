@@ -1,0 +1,80 @@
+CAMBIOS REALIZADOS SOBRE SAVBC
+==============================
+Objetivo: sustituir las herramientas/utilidades que NO se han dado en clase por
+las equivalentes del temario, manteniendo intacta la funcionalidad.
+
+Proyecto: NetBeans + Ant, Java 21. Paquete: neartrainnetwork.
+Verificación: compila sin errores con "javac 21" contra los 3 JAR de lib/ y se
+ha comprobado en ejecución que la lectura de los ficheros (con acentos) y el
+cálculo de tarifas siguen funcionando.
+
+--------------------------------------------------------------------------------
+1) java.nio.charset.StandardCharsets  ->  ELIMINADO
+--------------------------------------------------------------------------------
+El temario (Tema 7) enseña FileReader / FileWriter SIN parámetro de codificación
+(p. ej. "new FileReader(ruta)" y "new FileWriter(ruta, append)"), pero NO enseña
+la clase StandardCharsets ni los constructores con charset (son de Java 11+).
+
+Cambios:
+  - TrainNetwork.java     : new FileReader(fileName, StandardCharsets.UTF_8) -> new FileReader(fileName)
+  - TariffCalculator.java : idem
+  - Translator.java       : idem
+  - PaymentScreen.java    : new FileWriter(fileName, StandardCharsets.UTF_8, true) -> new FileWriter(fileName, true)
+  - Se han borrado los 4 "import java.nio.charset.StandardCharsets;".
+
+Nota: en Java 18+ (este proyecto es Java 21) FileReader/FileWriter usan UTF-8 por
+defecto, así que los nombres con tilde (p. ej. "Príncipe Pío") se siguen leyendo
+y escribiendo correctamente. Se ha verificado en ejecución.
+
+--------------------------------------------------------------------------------
+2) java.time.LocalDate  ->  SE MANTIENE (sin cambios)
+--------------------------------------------------------------------------------
+Se ha revisado todo el temario: NO se enseña ninguna forma de obtener/formatear
+la fecha actual (no se ve la API de java.util.Date en uso, ni Calendar, ni
+SimpleDateFormat; "Date" solo aparece como TIPO en diagramas UML del Tema 5, y
+System.currentTimeMillis()/nanoTime() del Tema 7 devuelven números, no una fecha
+de calendario AAAA-MM-DD).
+
+Como NO hay en los apuntes una forma equivalente de hacer lo mismo que
+LocalDate.now() (fecha del billete y nombre del fichero de log diario), se deja
+LocalDate tal cual, según lo indicado.
+
+--------------------------------------------------------------------------------
+3) Tratamiento de excepciones  ->  try / catch / finally con close()
+--------------------------------------------------------------------------------
+Toda la E/S que usaba try-with-resources se ha reescrito al patrón clásico que se
+enseña en clase: el recurso se declara fuera, se usa en el try, se captura
+IOException y SIEMPRE se cierra con close() en el finally (protegiendo también el
+propio close con su try/catch).
+
+Métodos reescritos:
+  - TrainNetwork.loadStationGraph()
+  - TariffCalculator.loadTariffs()
+  - Translator.load()
+  - PaymentScreen.writePaymentToLog()
+
+--------------------------------------------------------------------------------
+4) javax.naming.CommunicationException  ->  ELIMINADO (se captura Exception)
+--------------------------------------------------------------------------------
+El método de la librería del banco "bank.doOperation(...)" declara que lanza
+javax.naming.CommunicationException (excepción comprobada). No se puede "no
+tratarla", pero sí evitar depender de esa clase concreta: como CommunicationException
+hereda de Exception, en PaymentScreen.show() se ha cambiado
+
+      } catch (CommunicationException e) {
+por
+      } catch (Exception e) {
+
+que es la forma general de capturar excepciones que se ve en el Tema 4. Se ha
+borrado el "import javax.naming.CommunicationException;". El comportamiento se
+mantiene: si el cobro falla por comunicación, se va a CommunicationErrorScreen.
+
+--------------------------------------------------------------------------------
+Lo que NO se ha tocado (ya estaba en el temario)
+--------------------------------------------------------------------------------
+- Las librerías de la práctica SelfOrderKiosk (sienens) y UrjcBankServer (urjc):
+  son las que da la asignatura para la práctica; el enunciado pide usarlas.
+- AbsoluteLayout: aparece explícitamente en el Tema 8.
+- TreeSet, HashMap, LinkedHashMap, List, ArrayList, Arrays, Map.getOrDefault,
+  BigDecimal, Comparable/equals/hashCode/toString, BufferedReader/FileReader/
+  FileWriter/File, herencia/clases abstractas/polimorfismo: todo del temario.
