@@ -4,17 +4,12 @@ import java.util.Arrays;
 import sienens.SelfOrderKiosk;
 
 /**
- * Pantalla de selección de estación. La MISMA clase sirve para el origen y para
- * el destino: por eso recibe el título en el constructor.
- *
- * ¿Cómo sabe si pide origen o destino? Mira el contexto: si todavía no hay
- * origen, lo que elija el usuario es el origen (y pasa a pedir el destino); si
- * ya hay origen, lo elegido es el destino (y pasa al pago). Por eso es
- * importante que la bienvenida llame a reset() al empezar una compra.
+ * Pantalla para elegir una estación. La misma clase sirve para el origen y para
+ * el destino; el título se le pasa en el constructor.
  */
 public class StationSelectionScreen extends CarruselScreen {
 
-    private final String screenTitle; // título a mostrar (origen o destino)
+    private final String screenTitle;
 
     public StationSelectionScreen(String screenTitle, SelfOrderKiosk kiosk) {
         super(kiosk);
@@ -25,13 +20,12 @@ public class StationSelectionScreen extends CarruselScreen {
     public Screen show(OperationContext operationContext) {
         SelfOrderKiosk kiosk = getSelfOrderKiosk();
         Translator translator = operationContext.getTranslator();
-        // Lista completa de estaciones (únicas y ordenadas), de la red de trenes.
         TrainStation[] stations = operationContext.getTrainNetwork().getStationArray();
 
         configureButtons();
         kiosk.setTitle(translator.translate(screenTitle));
-        configureNavigationButtons(stations.length);              // muestra << y >> (hay muchas)
-        kiosk.setOption(CANCEL, translator.translate("Cancelar")); // botón 'P'
+        configureNavigationButtons(stations.length);
+        kiosk.setOption(CANCEL, translator.translate("Cancelar"));
 
         index = 0;
         while (true) {
@@ -40,11 +34,11 @@ public class StationSelectionScreen extends CarruselScreen {
 
             char event = kiosk.waitEvent(30);
             if (event == PREVIOUS || event == NEXT) {
-                updateIndex(event, stations.length);    // cambiar de página
+                updateIndex(event, stations.length);
             } else if (event == CANCEL) {
-                return new WelcomeScreen(kiosk);         // cancelar -> inicio
+                return new WelcomeScreen(kiosk);
             } else {
-                int selected = event - 'A';              // posición dentro de la página
+                int selected = event - 'A';
                 if (selected >= 0 && selected < end - index) {
                     return select(operationContext, stations[index + selected]);
                 }
@@ -52,11 +46,7 @@ public class StationSelectionScreen extends CarruselScreen {
         }
     }
 
-    /**
-     * Guarda la estación elegida donde toca y devuelve la siguiente pantalla:
-     * si aún no había origen, esto era el origen -> pedimos destino; si ya había
-     * origen, esto era el destino -> vamos al pago.
-     */
+    /** Si aún no hay origen, lo elegido es el origen (y se pide el destino); si ya lo hay, es el destino (y se pasa al pago). */
     private Screen select(OperationContext operationContext, TrainStation station) {
         SelfOrderKiosk kiosk = getSelfOrderKiosk();
         if (operationContext.getOrigin() == null) {
@@ -64,7 +54,6 @@ public class StationSelectionScreen extends CarruselScreen {
             return new StationSelectionScreen("Seleccione la estación de destino", kiosk);
         }
         operationContext.setDestination(station);
-        // Antes del pago se pregunta por la tarjeta de familia numerosa.
         return new FamilyDiscountScreen(kiosk);
     }
 }

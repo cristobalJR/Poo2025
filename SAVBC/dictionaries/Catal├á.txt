@@ -1,0 +1,25 @@
+Venta de billetes de Cercanías	Venda de bitllets de Rodalies
+Bienvenido. Seleccione una opción.	Benvingut. Seleccioni una opció.
+Cambiar idioma	Canviar idioma
+Iniciar compra	Iniciar compra
+Seleccione la estación de origen	Seleccioni l'estació d'origen
+Seleccione la estación de destino	Seleccioni l'estació de destinació
+Seleccione el idioma	Seleccioni l'idioma
+Cancelar	Cancel·lar
+Pago	Pagament
+Origen	Origen
+Destino	Destinació
+El precio de la compra es	El preu de la compra és
+Operación realizada con éxito	Operació realitzada amb èxit
+Problema de comunicación	Problema de comunicació
+Introduzca tarjeta de crédito	Introdueixi la targeta de crèdit
+Pago rechazado. Inténtelo de nuevo o cancele.	Pagament rebutjat. Torni-ho a provar o cancel·li.
+Billete de Cercanías	Bitllet de Rodalies
+Fecha	Data
+Retire la tarjeta y el billete.	Retiri la targeta i el bitllet.
+Retire su tarjeta. Recuperando comunicación, espere...	Retiri la seva targeta. Recuperant la comunicació, esperi...
+¿Dispone de tarjeta de familia numerosa?	Disposa de targeta de família nombrosa?
+Si dispone de tarjeta de familia numerosa se aplicará un 20% de descuento.	Si disposa de targeta de família nombrosa s'aplicarà un 20% de descompte.
+Sí	Sí
+No	No
+La estación de destino está en obras	L'estació de destinació està en obres

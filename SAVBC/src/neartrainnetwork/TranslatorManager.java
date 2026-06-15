@@ -5,34 +5,27 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Carga, guarda y ofrece los idiomas disponibles (los Translator).
- *
- * El español es el idioma por defecto (no traduce) y siempre está. Además, por
- * cada fichero .txt que haya en la carpeta dictionaries/ se crea un idioma más.
- * Usamos un LinkedHashMap para conservar el orden de inserción (español primero
- * y luego los demás), que es el orden en que se verán en el carrusel.
- *
- * Para añadir un idioma: deja un fichero "Idioma.txt" en dictionaries/. Para
- * cambiar la carpeta o el idioma por defecto, toca las constantes de abajo.
+ * Carga y guarda los idiomas disponibles. El español es el idioma por defecto y
+ * siempre está; los demás se cargan de los ficheros de la carpeta dictionaries/.
  */
 public class TranslatorManager {
 
     private static final String DICTIONARIES_DIR = "dictionaries";
     private static final String DEFAULT_LANGUAGE = "Español";
 
-    private Translator currentTranslator;                        // idioma activo
+    private Translator currentTranslator;
     private final Map<String, Translator> translatorMap = new LinkedHashMap<>();
 
     public TranslatorManager() {
-        loadDefaultTranslator(); // primero el español (por defecto)
-        loadTranslators();       // luego los idiomas de la carpeta dictionaries/
+        loadDefaultTranslator();
+        loadTranslators();
     }
 
     public Translator getCurrentTranslator() {
         return currentTranslator;
     }
 
-    /** Cambia el idioma activo por el del nombre indicado (si existe). */
+    /** Cambia el idioma activo por el indicado (si existe). */
     public void setCurrentTranslator(String language) {
         Translator translator = translatorMap.get(language);
         if (translator != null) {
@@ -40,7 +33,6 @@ public class TranslatorManager {
         }
     }
 
-    /** Lista de idiomas disponibles, en orden (para mostrarlos en el carrusel). */
     public Translator[] getTranslatorArray() {
         return translatorMap.values().toArray(new Translator[0]);
     }
@@ -57,14 +49,13 @@ public class TranslatorManager {
         File directory = new File(DICTIONARIES_DIR);
         File[] files = directory.listFiles();
         if (files == null) {
-            return; // la carpeta aún no existe: solo habrá español
+            return;
         }
         for (File file : files) {
             String name = file.getName();
             if (!name.toLowerCase().endsWith(".txt")) {
-                continue; // ignoramos lo que no sea .txt
+                continue;
             }
-            // El nombre del idioma es el del fichero sin la extensión.
             String language = name.substring(0, name.lastIndexOf('.'));
             translatorMap.put(language, new Translator(language, file.getPath()));
         }

@@ -4,14 +4,8 @@ import sienens.SelfOrderKiosk;
 import urjc.UrjcBankServer;
 
 /**
- * Pantalla de error de comunicación con el banco. Mientras se muestra,
- * comprueba cada 5 segundos si la comunicación ha vuelto; cuando vuelve,
- * regresa a la bienvenida. También se puede volver pulsando Cancelar, sin
- * esperar a la reconexión. El corte que simula el banco dura un tiempo
- * aleatorio (hasta ~1 minuto).
- *
- * Recibe el banco desde la pantalla de pago para poder preguntarle si la
- * comunicación está disponible (comunicationAvaiable()).
+ * Pantalla de error de comunicación con el banco. Espera a que vuelva la
+ * comunicación (o a que el usuario cancele) y vuelve a la pantalla de inicio.
  */
 public class CommunicationErrorScreen extends Screen {
 
@@ -34,16 +28,14 @@ public class CommunicationErrorScreen extends Screen {
         kiosk.setTitle(translator.translate("Problema de comunicación"));
         kiosk.setDescription(
                 translator.translate("Retire su tarjeta. Recuperando comunicación, espere..."));
-        // Botón de cancelar (R24): permite volver al inicio sin esperar a que
-        // se recupere la comunicación.
         kiosk.setOption(CANCEL, translator.translate("Cancelar"));
 
         while (true) {
-            char event = kiosk.waitEvent(5);   // espera 5 s entre comprobaciones
-            if (event == CANCEL) {             // el usuario decide cancelar
+            char event = kiosk.waitEvent(5);
+            if (event == CANCEL) {
                 return new WelcomeScreen(kiosk);
             }
-            if (bank.comunicationAvaiable()) { // ha vuelto la comunicación
+            if (bank.comunicationAvaiable()) {
                 return new WelcomeScreen(kiosk);
             }
         }

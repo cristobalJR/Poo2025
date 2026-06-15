@@ -3,27 +3,22 @@ package neartrainnetwork;
 import java.math.BigDecimal;
 
 /**
- * "Carpeta" con los datos de la compra en curso. Las pantallas se van pasando
- * este objeto y lo van rellenando (primero el origen, luego el destino...).
- *
- * Además da acceso a los servicios compartidos que necesitan las pantallas: el
- * gestor de idiomas (para la pantalla de idioma) y la red de trenes (para
- * calcular el precio). Si una pantalla nueva necesita algo compartido, lo más
- * cómodo es exponerlo aquí, que es el objeto que viaja por todas las pantallas.
+ * Guarda los datos de la compra en curso (origen, destino, idioma y descuento).
+ * Las pantallas se van pasando este objeto y lo van rellenando. También da
+ * acceso al gestor de idiomas y a la red de trenes.
  */
 public class OperationContext {
 
     private TrainStation origin;
     private TrainStation destination;
-    private boolean largeFamily;                         // ¿tiene tarjeta de familia numerosa?
-    private Translator translator;                       // idioma actual
-    private final TranslatorManager translatorManager;   // servicio de idiomas
-    private final TrainNetwork trainNetwork;             // servicio de red / precios
+    private boolean largeFamily;
+    private Translator translator;
+    private final TranslatorManager translatorManager;
+    private final TrainNetwork trainNetwork;
 
     public OperationContext(TranslatorManager translatorManager, TrainNetwork trainNetwork) {
         this.translatorManager = translatorManager;
         this.trainNetwork = trainNetwork;
-        // Arrancamos con el idioma actual del gestor (por defecto, español).
         this.translator = translatorManager.getCurrentTranslator();
     }
 
@@ -55,7 +50,6 @@ public class OperationContext {
         this.destination = destination;
     }
 
-    /** ¿El usuario ha declarado tener tarjeta de familia numerosa? */
     public boolean isLargeFamily() {
         return largeFamily;
     }
@@ -68,19 +62,14 @@ public class OperationContext {
         this.translator = translator;
     }
 
-    /** Vacía origen, destino y el descuento para empezar una compra nueva desde cero. */
+    /** Deja origen, destino y descuento a cero para empezar una compra nueva. */
     public void reset() {
         this.origin = null;
         this.destination = null;
         this.largeFamily = false;
     }
 
-    /**
-     * Precio del viaje actual (lo calcula la red de trenes con origen y destino).
-     * Si el usuario tiene tarjeta de familia numerosa se aplica un 20% de
-     * descuento: precio - precio*0.2 = precio*0.8. Se deja a 2 decimales (euros);
-     * con las tarifas del fichero el resultado es exacto, no hace falta redondear.
-     */
+    /** Precio del viaje; si hay tarjeta de familia numerosa, aplica un 20% de descuento. */
     public BigDecimal getPrice() {
         BigDecimal price = trainNetwork.getPrice(origin, destination);
         if (largeFamily) {
@@ -89,11 +78,7 @@ public class OperationContext {
         return price;
     }
 
-    /**
-     * Resumen legible y TRADUCIDO de la operación (origen, destino y precio).
-     * Se usa como descripción en la pantalla de pago y como base del billete.
-     * Nota: aquí origen y destino ya deben estar fijados (se llama en el pago).
-     */
+    /** Resumen traducido de la operación (origen, destino y precio). */
     public String getDescription() {
         BigDecimal price = getPrice();
         return translator.translate("Origen") + ": " + origin.getName() + "\n"
