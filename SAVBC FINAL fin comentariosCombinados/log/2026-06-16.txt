@@ -1,0 +1,8 @@
+Origen: Aeropuerto T4
+Destino: Atocha
+El precio de la compra es 1.36 €
+----
+Origen: Aeropuerto T4
+Destinació: Atocha
+El preu de la compra és 1.7 €
+----
